@@ -300,3 +300,4 @@ $RECYCLE.BIN/
 
 notebooks/
 debug/
+!templates/*

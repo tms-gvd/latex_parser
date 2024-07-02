@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" href="{{ url_for('static', filename='favicon.ico') }}">
+    <title>File Viewer</title>
+    <!-- Load MathJax -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+        window.MathJax = {
+            loader: { load: ['[tex]/mathtools'] },
+            tex: { packages: { '[+]': ['mathtools'] } }
+        };
+    </script>
+    <style>
+        /* Center the table on the page and add spacing and lines */
+        table {
+            margin-left: auto;
+            margin-right: auto;
+            border-collapse: collapse;
+        }
+
+        td {
+            border: 1px solid black;
+            /* Draw lines around each cell */
+            padding: 15px;
+            /* Increase spacing within cells */
+            text-align: center;
+            /* Center the content of the cells */
+        }
+
+        /* Increase the length of the input field */
+        .input-url {
+            width: 100%;
+            /* Adjust the width as needed */
+            max-width: 230px;
+            /* Maximum width to ensure it doesn't get too wide on larger screens */
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Input Article URL</h1>
+    <form method="post">
+        <!-- Set the default URL in the value attribute -->
+        <input type="text" name="url" required value="https://arxiv.org/abs/2102.09672" class="input-url">
+        <button type="submit">Download and Extract Equations</button>
+    </form>
+    {% if equations %}
+    <h2>Extracted Equations:</h2>
+    <table>
+        {% for equation in equations %}
+        <tr>
+            <td>{{ equation }}</td>
+            <td><button onclick="copyToClipboard(this)" data-equation="{{ equation }}">Copy</button></td>
+        </tr>
+        {% endfor %}
+    </table>
+    {% endif %}
+    <script>
+        function copyToClipboard(element) {
+            let texCommand = element.getAttribute('data-equation');
+            texCommand = texCommand.replace(/^\\\(/, '').replace(/\\\)$/, '');
+            navigator.clipboard.writeText(texCommand).then(function () {
+                console.log('Copying to clipboard was successful!');
+                alert('Copied to clipboard successfully!');
+            }, function (err) {
+                console.error('Could not copy text: ', err);
+                alert('Failed to copy text.');
+            });
+        }
+    </script>
+    <!-- Displaying TeX Code Using the Macro -->
+    <div style="display: none;">
+        Testing:
+        <ul>
+            <li>
+                {% raw %}
+                \(
+                \DeclarePairedDelimiterX{\infdivx}[2]{(}{)}{#1\;\delimsize\|\;#2}
+                \newcommand{\kld}[2]{D_{KL}\infdivx{#1}{#2}}
+
+                \kld{q(x_{t-1}|x_t,x_0)}{p_{\theta}(x_{t-1}|x_t)}
+                \)
+                {% endraw %}
+            </li>
+        </ul>
+    </div>
+</body>
+
+</html>
