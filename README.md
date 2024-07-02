@@ -1,7 +1,14 @@
 Latex Parser
 =
 
-The Latex Parser is an iterative project that aims to make it easier to write $\LaTeX$ documents. It is a well known fact that $\LaTeX$ is a powerful tool for writing documents, allowing the user to write complex mathematical formulas, tables, figures, algorithms, etc. However, it comes at the cost of more complex syntax.
+```python
+python main.py
+```
 
-With this project, I will try to speed up the writing process, step by step:
-1. **Taking notes**: extract meaningful information from papers.
+Then go to [http://localhost:8000/](http://localhost:8000/)
+
+TODO:
+- [ ] Improve the parser: handle more cases, especially with the `\newcommand` and similar commands
+- [ ] Add more information to the main page: title, author, date, etc.
+- [ ] Display equations in the right order: it is true actually only if the paper is written in a single file
+- [ ] Add a way to report issues
