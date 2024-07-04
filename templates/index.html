@@ -18,10 +18,30 @@
         document.addEventListener('DOMContentLoaded', function () {
             document.getElementById('reportBugLink').addEventListener('click', function (event) {
                 event.preventDefault(); // Prevent the default anchor action
-                const paperLink = document.querySelector('input[name="url"]').value; // Assuming this is the link of the paper
-                const message = `Please open an issue on the GitHub repository and include this paper link: ${paperLink}`;
-                alert(message);
+                const paperLink = document.querySelector('input[name="url"]').value;
+                const githubRepoUrl = "https://github.com/tms-gvd/latex_parser";
+
+                // Set the href attribute for the GitHub repository link
+                document.getElementById('githubRepoLink').href = githubRepoUrl;
+
+                // Set the text content for the paper link
+                document.getElementById('paperLink').textContent = paperLink;
+
+                // Display the modal
+                document.getElementById('myModal').style.display = "block";
             });
+
+            // When the user clicks on <span> (x), close the modal
+            document.getElementsByClassName('close')[0].onclick = function () {
+                document.getElementById('myModal').style.display = "none";
+            }
+
+            // Also close the modal if the user clicks anywhere outside of it
+            window.onclick = function (event) {
+                if (event.target == document.getElementById('myModal')) {
+                    document.getElementById('myModal').style.display = "none";
+                }
+            }
         });
     </script>
     <script>
@@ -74,11 +94,67 @@
             max-width: 230px;
             /* Maximum width to ensure it doesn't get too wide on larger screens */
         }
+
+        /* The Modal (background) */
+        .modal {
+            display: none;
+            /* Hidden by default */
+            position: fixed;
+            /* Stay in place */
+            z-index: 1;
+            /* Sit on top */
+            left: 0;
+            top: 0;
+            width: 100%;
+            /* Full width */
+            height: 100%;
+            /* Full height */
+            overflow: auto;
+            /* Enable scroll if needed */
+            background-color: rgb(0, 0, 0);
+            /* Fallback color */
+            background-color: rgba(0, 0, 0, 0.4);
+            /* Black w/ opacity */
+        }
+
+        /* Modal Content */
+        .modal-content {
+            background-color: #fefefe;
+            margin: 15% auto;
+            /* 15% from the top and centered */
+            padding: 20px;
+            border: 1px solid #888;
+            width: 80%;
+            /* Could be more or less, depending on screen size */
+        }
+
+        /* The Close Button */
+        .close {
+            color: #aaa;
+            float: right;
+            font-size: 28px;
+            font-weight: bold;
+        }
+
+        .close:hover,
+        .close:focus {
+            color: black;
+            text-decoration: none;
+            cursor: pointer;
+        }
     </style>
 </head>
 
 <body>
     <a href="#" id="reportBugLink">Report Bug</a>
+    <!-- The Modal -->
+    <div id="myModal" class="modal">
+        <!-- Modal content -->
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <p id="modalText">Please open an issue on the GitHub repository at <a href="" id="githubRepoLink">this link</a> and include this paper link: <span id="paperLink"></span>.</p>
+        </div>
+    </div>
     <h1>Input Article URL</h1>
     <form method="post">
         <!-- Set the default URL in the value attribute -->
