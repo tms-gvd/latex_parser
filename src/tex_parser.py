@@ -8,6 +8,8 @@ import tarfile
 import re
 import requests
 from copy import copy
+from pathlib import Path
+
 
 TEX_EXT = [".tex", ".sty", ".bst"]
 FIGS_EXT = [".pdf", ".png", ".jpg"]
@@ -133,7 +135,10 @@ def parse_equations(file):
                 match[0] + match[2] + match[3]
             )  # \begin{...}, content, \end{...}
         else:  # This is for $$...$$
-            equations_with_tags.append(match[4])  # $$...$$
+            # Wrap the content in \begin{equation}...\end{equation} instead of keeping $$...$$
+            equations_with_tags.append(
+                "\\begin{equation}\n" + match[5].strip() + "\n\\end{equation}"
+            )  # match[5] contains the content between $$...$$
     return equations_with_tags
 
 
@@ -141,7 +146,7 @@ def get_raw_nc(files):
     new_commands = []
     print("Looking for new commands...")
     for file in files:
-        print(file, end=": ")
+        print(Path(file).name, end=": ")
         with open(file, "r") as f:
             useful_lines = map(
                 handle_exceptions, filter(not_commented_empty, f.readlines())
@@ -286,7 +291,7 @@ class TexParser:
                 for new, nc in new_commands.items():
                     if new in equation:
                         equation = nc + "\n" + equation
-                all_equations.append(f"\\({equation}\\)")
+                all_equations.append(f"\\[{equation}\\]")
 
         if self.use_temp_dir:
             shutil.rmtree(

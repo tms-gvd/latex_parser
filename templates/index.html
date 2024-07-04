@@ -45,7 +45,7 @@
     <h1>Input Article URL</h1>
     <form method="post">
         <!-- Set the default URL in the value attribute -->
-        <input type="text" name="url" required value="https://arxiv.org/abs/2102.09672" class="input-url">
+        <input type="text" name="url" required value="http://arxiv.org/abs/2310.11838" class="input-url">
         <button type="submit">Download and Extract Equations</button>
     </form>
     {% if equations %}
@@ -73,17 +73,23 @@
         }
     </script>
     <!-- Displaying TeX Code Using the Macro -->
+    <!-- <div> -->
     <div style="display: none;">
         Testing:
         <ul>
             <li>
                 {% raw %}
-                \(
-                \DeclarePairedDelimiterX{\infdivx}[2]{(}{)}{#1\;\delimsize\|\;#2}
-                \newcommand{\kld}[2]{D_{KL}\infdivx{#1}{#2}}
-
-                \kld{q(x_{t-1}|x_t,x_0)}{p_{\theta}(x_{t-1}|x_t)}
-                \)
+\[
+\DeclarePairedDelimiterX{\infdivx}[2]{(}{)}{#1\;\delimsize\|\;#2}
+\newcommand{\kld}[2]{{D_{KL}\infdivx{#1}{#2}}}
+                
+\begin{alignat}{2}
+    L_{\text{vlb}} &\coloneqq L_0 + L_1 + ... + L_{T-1} + L_T \label{eq:loss} \\
+    L_{0} &\coloneqq -\log p_{\theta}(x_0 | x_1) \label{eq:loss0} \\
+    L_{t-1} &\coloneqq \kld{q(x_{t-1}|x_t,x_0)}{p_{\theta}(x_{t-1}|x_t)} \label{eq:losst} \\
+    L_{T} &\coloneqq \kld{q(x_T | x_0)}{p(x_T)} \label{eq:lossT} 
+\end{alignat}
+\]
                 {% endraw %}
             </li>
         </ul>
