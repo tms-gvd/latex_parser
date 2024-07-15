@@ -152,7 +152,10 @@
         <!-- Modal content -->
         <div class="modal-content">
             <span class="close">&times;</span>
-            <p id="modalText">Please open an issue on the GitHub repository at <a href="" id="githubRepoLink">this link</a> and include this paper link: <span id="paperLink"></span>.</p>
+            <p id="modalText">Please open an issue on the GitHub repository at
+                <a href="" id="githubRepoLink">this link</a>
+                and include this paper link: <span id="paperLink"></span>.
+            </p>
         </div>
     </div>
     <h1>Input Article URL</h1>
@@ -162,7 +165,10 @@
         <button type="submit">Download and Extract Equations</button>
     </form>
     {% if equations %}
-    <h2>Extracted Equations:</h2>
+    <div style="margin-top: 20px; margin-bottom: 20px;">
+        <span style="font-size: 24px; font-weight: bold; display: inline-block;">Extracted Equations:</span>
+        <a href="{{ url_for('static', filename=eq_filename) }}" download style="display: inline-block; margin-left: 10px;">Click here to download them</a>
+    </div>
     <table>
         {% for equation in equations %}
         <tr>

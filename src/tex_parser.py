@@ -275,12 +275,14 @@ class TexParser:
 
         # For tex files, get the lines with new commands
         raw_nc = get_raw_nc(tex_paths)
+        self.raw_nc = raw_nc
 
         # Parse the new commands into a dictionary
         new_commands = parse_new_commands(raw_nc)
 
         # Get the raw equations from the tex files
         all_equations = []
+        self.raw_equations = []
         for file in tex_paths:
             with open(file, "r") as f:
                 clean_file = "".join(
@@ -288,6 +290,7 @@ class TexParser:
                 )
                 raw_equations = parse_equations(clean_file)
             for equation in raw_equations:
+                self.raw_equations.append(equation)
                 for new, nc in new_commands.items():
                     if new in equation:
                         equation = nc + "\n" + equation
@@ -299,3 +302,10 @@ class TexParser:
             )  # Clean up the temporary directory if one was used
 
         return all_equations
+
+    def save_equations(self, save_directory: str):
+        file_name = "equations.txt"
+        file_path = os.path.join(save_directory, file_name)
+        with open(file_path, "w") as f:
+            f.write("".join(self.raw_nc) + "\n\n" + "\n\n".join(self.raw_equations))
+        return file_name
